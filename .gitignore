@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# oh-my-claudecode / Claude Code local state
+.omc/
+.claude/
+
+# local env & logs
+.env
+.env.*
+*.log
