@@ -9,6 +9,8 @@ tags: []
 status: in-progress   # in-progress | paused | done
 phase: 0              # 0–4
 next:                 # 다음에 할 일 한 줄
+detour:               # learn 중인 개념의 <concept-slug>. 없으면 비움. next는 덮어쓰지 않음
+onboard: none         # none | in-progress | done | skipped
 ---
 
 # {title}
@@ -18,6 +20,10 @@ next:                 # 다음에 할 일 한 줄
 
 ## 읽은 범위
 <!-- Claude가 PDF에서 확인한 범위. 읽지 못한 페이지·표·appendix가 있으면 적는다 -->
+
+## 배경 지도
+<!-- 온보딩을 할 때만 채운다. 목표 / 지도(평문 또는 mermaid) / strand별 측정 결과(floor / ceiling / 오개념 / 출발점) / 노드 상태(완료 / 미해결 / 미검토) -->
+- 현재 위치:
 
 ## 이해도 점검
 <!-- Phase 1: 질문, 사용자 답 원문, 바로잡은 부분(근거 위치), 남은 오해 -->
@@ -51,7 +57,8 @@ next:                 # 다음에 할 일 한 줄
 ### 놓친 것 (논문당 누적 0–3)
 
 ## 조력 기록
-<!-- 쟁점(claim·근거)별 사용한 lens, 도움 단계(nudge / lens / partial / full), 횟수. 같은 쟁점에 같은 lens를 반복하지 않기 위함 -->
+<!-- 쟁점(claim·근거)별 사용한 lens, 도움 단계(nudge / lens / partial / full), 횟수. 같은 쟁점에 같은 lens를 반복하지 않기 위함.
+개념 도움은 위 횟수와 따로 한 줄씩: 개념 | 위치 | short/learn | 확인 결과 | learn 제안(수락/거절) -->
 
 ## 연결
 - Supports:
