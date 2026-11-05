@@ -126,3 +126,7 @@ concepts/    개념 노트 (논문을 넘어 누적)
 | 지식 그래프(명제 + 추론 체인 + provenance) | `concepts/` 마크다운 노트 |
 | practice: 비활성 상태에서의 인출, interleave, recall/discrimination/composition | `practice` 모드 |
 | (없음) | 논문 앵커, 비유의 한계, 기호표, 코드 앵커, critique 복귀 |
+
+## 라이선스
+
+[MIT](LICENSE)
