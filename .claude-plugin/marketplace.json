@@ -1,0 +1,15 @@
+{
+  "name": "paper-critique",
+  "owner": { "name": "CSJasper", "url": "https://github.com/CSJasper" },
+  "metadata": {
+    "description": "paper-critique Claude Code 플러그인 마켓플레이스"
+  },
+  "plugins": [
+    {
+      "name": "paper-critique",
+      "source": "./",
+      "description": "대화형 논문 비판 읽기 훈련과 연구 주제 발굴",
+      "version": "0.2.0"
+    }
+  ]
+}

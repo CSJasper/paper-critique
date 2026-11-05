@@ -1,26 +1,60 @@
-# paper-critique 스킬
+# paper-critique
 
-논문을 비판적으로 읽고, 쌓인 노트에서 연구 주제 후보를 찾기 위한 Claude Code 스킬.
+논문을 비판적으로 읽고, 쌓인 노트에서 연구 주제 후보를 찾기 위한 Claude Code 플러그인(스킬).
 
 ## 설치
 
-```bash
-# 전역 설치 (모든 폴더에서 사용)
-git clone https://github.com/CSJasper/paper-critique.git ~/.claude/skills/paper-critique
+### 플러그인으로 설치 (권장)
 
-# 또는 다른 곳에 clone한 뒤 symlink (repo에서 고친 내용이 바로 반영됨)
-git clone https://github.com/CSJasper/paper-critique.git <원하는 경로>
-ln -s <원하는 경로> ~/.claude/skills/paper-critique
+Claude Code 안에서:
 
-# 또는 논문 폴더 전용
-mkdir -p <논문폴더>/.claude/skills && git clone https://github.com/CSJasper/paper-critique.git <논문폴더>/.claude/skills/paper-critique
+```
+/plugin marketplace add CSJasper/paper-critique
+/plugin install paper-critique@paper-critique
 ```
 
-Claude Code를 재시작하면 인식된다.
+Claude Code 2.1.275 이상이면 한 줄로도 된다.
+
+```
+/plugin install paper-critique --marketplace CSJasper/paper-critique
+```
+
+터미널에서 하려면:
+
+```bash
+claude plugin marketplace add CSJasper/paper-critique
+claude plugin install paper-critique@paper-critique
+```
+
+설치 후 Claude Code를 재시작한다. 플러그인으로 설치하면 명령 이름 앞에 플러그인 이름이 붙어 `/paper-critique:paper-critique read ...` 형태가 된다. 자연어로 부르면 이름을 신경 쓸 필요가 없다.
+
+업데이트와 삭제:
+
+```
+/plugin marketplace update paper-critique
+/plugin uninstall paper-critique@paper-critique
+```
+
+### 스킬로 직접 설치 (수정하며 쓰고 싶을 때)
+
+스킬 본체는 `skills/paper-critique/`에 있다. repo를 clone한 뒤 이 폴더를 스킬 경로에 연결한다.
+
+```bash
+git clone https://github.com/CSJasper/paper-critique.git <원하는 경로>
+
+# 전역 (모든 폴더에서 사용, repo에서 고친 내용이 바로 반영됨)
+ln -s <원하는 경로>/skills/paper-critique ~/.claude/skills/paper-critique
+
+# 또는 논문 폴더 전용
+mkdir -p <논문폴더>/.claude/skills
+ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/paper-critique
+```
+
+이 방식이면 `/paper-critique read ...`처럼 접두사 없이 부른다. 플러그인과 함께 설치하면 같은 스킬이 두 번 잡히므로 하나만 쓴다.
 
 ## 사용
 
-논문 폴더에서 Claude Code를 실행한 뒤:
+논문 폴더에서 Claude Code를 실행한 뒤(플러그인 설치라면 `/paper-critique:paper-critique`로 바꿔 쓴다):
 
 ```
 /paper-critique read papers/xxx.pdf   # 논문 한 편 읽기
@@ -59,9 +93,9 @@ Claude Code를 재시작하면 인식된다.
 답이 막히면 `learn`을 한 번만 제안한다. 받아들이면 단계별로 개념을 익힌 뒤 읽던 지점에서 이어 읽고, 거절하면 비판을 계속한다.
 분야 자체가 낯설면 `read`를 시작할 때 Claude가 온보딩을 한 번 제안한다. 받아들이면 논문 전체의 배경 개념을 측정하고 최소 지도를 만들어 가르친 뒤 같은 논문의 이해도 점검으로 넘어간다. `onboard <pdf>`로 바로 시작해도 된다.
 `practice`는 쌓인 개념 중 복습할 것을 골라 묻는다.
-개념 상태는 `introduced` → `checked` → `held` 세 단계이고, 판정 규칙은 `templates/concept.md`에 있다.
+개념 상태는 `introduced` → `checked` → `held` 세 단계이고, 판정 규칙은 `skills/paper-critique/templates/concept.md`에 있다.
 
-## 폴더 구조
+## 논문 폴더 구조
 
 ```
 papers/      PDF
@@ -75,10 +109,10 @@ concepts/    개념 노트 (논문을 넘어 누적)
 
 ## 커스터마이즈 포인트
 
-- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 쓴다. 기본값을 바꾸려면 SKILL.md Phase 1을 고친다.
-- lens 목록은 SKILL.md `조력자 규칙`에 있다. 분야에 맞게 추가·삭제한다.
+- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 쓴다. 기본값을 바꾸려면 `skills/paper-critique/SKILL.md` Phase 1을 고친다.
+- lens 목록은 `skills/paper-critique/SKILL.md` `조력자 규칙`에 있다. 분야에 맞게 추가·삭제한다.
 - `synth`의 최소 실험 기준은 `gap-log.md`의 `연구 제약`을 따른다. 기본값은 로컬 GPU 없음(노트북).
-- `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다.
+- `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다(모두 `skills/paper-critique/` 아래).
 
 ## 참고한 것
 

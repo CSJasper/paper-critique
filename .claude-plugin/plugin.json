@@ -1,0 +1,18 @@
+{
+  "name": "paper-critique",
+  "version": "0.2.0",
+  "description": "사용자가 자기 답과 비판을 먼저 쓰는 대화형 논문 비판 읽기 훈련. 이어 읽기, 교차 분석(synth), 개념 학습(learn)·복습(practice)·온보딩(onboard) 포함.",
+  "author": {
+    "name": "CSJasper",
+    "url": "https://github.com/CSJasper"
+  },
+  "homepage": "https://github.com/CSJasper/paper-critique",
+  "repository": "https://github.com/CSJasper/paper-critique",
+  "keywords": [
+    "paper",
+    "research",
+    "critical-reading",
+    "learning",
+    "korean"
+  ]
+}
