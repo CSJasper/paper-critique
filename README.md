@@ -13,7 +13,7 @@ Claude Code 안에서:
 /plugin install paper-critique@paper-critique
 ```
 
-Claude Code 2.1.275 이상이면 한 줄로도 된다.
+Claude Code 2.1.275 이상이면 한 줄로도 설치 가능.
 
 ```
 /plugin install paper-critique --marketplace CSJasper/paper-critique
@@ -50,11 +50,11 @@ mkdir -p <논문폴더>/.claude/skills
 ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/paper-critique
 ```
 
-이렇게 설치하면 `/paper-critique read ...`처럼 접두사 없이 부른다. 플러그인과 함께 설치하면 같은 스킬이 두 번 잡히니 하나만 쓴다.
+이렇게 설치하면 `/paper-critique read ...`처럼 접두사 없이 부른다. 플러그인과 함께 설치하면 같은 스킬이 두 번 잡히니 하나만 사용한다.
 
-### Codex에서 쓰기
+### Codex에서 사용하는 법
 
-같은 스킬 폴더를 Codex CLI에서도 쓴다. 둘 중 하나로 설치한다.
+같은 스킬 폴더를 Codex CLI에서도 사용한다. 둘 중 하나로 설치한다.
 
 플러그인으로 설치:
 
@@ -70,17 +70,17 @@ mkdir -p ~/.agents/skills
 ln -s <원하는 경로>/skills/paper-critique ~/.agents/skills/paper-critique
 ```
 
-Codex에서는 `$paper-critique read papers/xxx.pdf`처럼 `$`로 부르거나 `/skills`에서 고른다. 자연어로 불러도 된다. 후보 논문을 찾고 synth에서 선행 연구를 확인할 때 웹 검색을 쓴다. 노트를 저장하려면 쓰기 권한도 필요하므로 논문 폴더에서 이렇게 실행한다.
+Codex에서는 `$paper-critique read papers/xxx.pdf`처럼 `$`로 부르거나 `/skills`에서 고른다. 자연어로 불러도 된다. 후보 논문을 찾고 synth에서 선행 연구를 확인할 때 웹 검색을 사용한다. 노트를 저장하려면 쓰기 권한도 필요하므로 논문 폴더에서 이렇게 실행한다.
 
 ```bash
 codex --search --sandbox workspace-write
 ```
 
-PDF를 바로 읽을 수 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)을 쓴다. 설치해 두면 좋다(`brew install poppler`).
+PDF를 바로 읽을 수 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)을 사용하면 됨. 설치해 두면 좋다(`brew install poppler`).
 
 ## 사용
 
-논문 폴더에서 Claude Code를 실행하고 아래처럼 부른다. 플러그인으로 설치했다면 `/paper-critique:paper-critique`로, Codex라면 `$paper-critique`로 바꿔 쓴다.
+논문 폴더에서 Claude Code를 실행하고 아래처럼 부른다. 플러그인으로 설치했다면 `/paper-critique:paper-critique`로, Codex라면 `$paper-critique`로 바꿔 사용한다.
 
 ```
 /paper-critique read papers/xxx.pdf [주제]  # 논문 한 편 깊게 읽기 (주제를 주면 그 주제에 기록)
@@ -110,11 +110,11 @@ PDF를 바로 읽을 수 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)
 
 ## 흐름 (주제)
 
-논문 한 편이 아니라 주제 하나를 단위로 읽고 싶을 때 쓴다.
+논문 한 편이 아니라 주제 하나를 단위로 읽고 싶을 때 사용한다.
 
-1. `map`: 먼저 주제 이름(slug)을 정한다. Claude가 하나를 제안하고 내가 확인하면, 이후 `skim`·`read`·`checkpoint`의 `[주제]`에 이 slug를 쓴다. 그다음 이 주제에 대해 내가 아는 것과 예상 쟁점을 쓴다. Claude는 그 뒤에 후보 논문 15–30편(제목·연도·링크·찾은 출처만, 순서 매기기·추천 없음)을 모으고 주제 수준의 계보·쟁점 초안을 만든다. 초안에는 "이번에 찾은 자료 범위 안에서"라는 단서를 달고, 검색으로 확인하지 않은 주장은 `[추측]`으로 표시한다. skim할 논문은 내가 고른다.
+1. `map`: 먼저 주제 이름(slug)을 정한다. Claude가 하나를 제안하고 내가 확인하면, 이후 `skim`·`read`·`checkpoint`의 `[주제]`에 이 slug를 사용한다. 그다음 이 주제에 대해 내가 아는 것과 예상 쟁점을 사용한다. Claude는 그 뒤에 후보 논문 15–30편(제목·연도·링크·찾은 출처만, 순서 매기기·추천 없음)을 모으고 주제 수준의 계보·쟁점 초안을 만든다. 초안에는 "이번에 찾은 자료 범위 안에서"라는 단서를 달고, 검색으로 확인하지 않은 주장은 `[추측]`으로 표시한다. skim할 논문은 내가 고른다.
    - 주제 대신 논문 리스트를 줄 수도 있다. PDF 경로, arXiv 링크나 ID, 제목을 섞어 쉼표나 줄바꿈으로 나눈다. Claude는 먼저 목록(제목·연도·링크)만 정리해 보여 준다. 내용 요약이나 공통 주제는 말하지 않는다. slug를 정하고 논문을 묶은 이유와 예상 쟁점을 쓰면, Claude는 내가 준 논문을 후보 풀 맨 위(출처 `사용자 지정`)에 두고 주변 논문을 검색으로 보탠다. 이미 있는 주제의 slug를 고르면 준 논문만 그 주제의 후보 풀 끝에 덧붙는다. 예측과 초안은 그대로다.
-2. `skim`: abstract와 핵심 Figure/Table을 직접 보고 `deep / done / drop`과 이유 한 줄을 먼저 쓴다. 판정 전에는 "설명해줘"라고 해도 Claude가 이 논문의 방법을 설명하지 않는다. 볼 위치만 알려 준다. 판정을 쓰면 Claude가 사실 카드(문제, 방법 한 줄, 핵심 결과와 쪽 번호, 평가 없음)를 주고 내 판정을 반박한다. 최종 판정은 내가 한다. 후보 풀에 없는 논문도 skim할 수 있다. 그 논문은 후보 풀에 덧붙는다.
+2. `skim`: abstract와 핵심 Figure/Table을 직접 보고 `deep / done / drop`과 이유 한 줄을 먼저 사용한다. 판정 전에는 "설명해줘"라고 해도 Claude가 이 논문의 방법을 설명하지 않는다. 볼 위치만 알려 준다. 판정을 쓰면 Claude가 사실 카드(문제, 방법 한 줄, 핵심 결과와 쪽 번호, 평가 없음)를 주고 내 판정을 반박한다. 최종 판정은 내가 한다. 후보 풀에 없는 논문도 skim할 수 있다. 그 논문은 후보 풀에 덧붙는다.
 3. `deep` 판정이면 같은 노트 파일에서 `read`로 승격한다. skim 기록은 그대로 남는다. 판정 없이 바로 깊게 읽겠다고 해도 된다.
 4. 이미 판정한 논문을 다시 skim하면 새 판정은 아래에 덧붙는다. 같은 논문을 두 번 세지는 않는다.
 5. `checkpoint`: 한 주제에서 skim 8편이나 deep 1편이 쌓이면 Claude가 한 번 제안한다. 거절하면 다음 트리거까지 다시 묻지 않는다. 수락하면 Claude가 판단 재료(처음 쓴 내 예측, 이 주제의 gap 항목, 판정 보정 기록, skim·deep 수)를 평가 없이 먼저 보여 준다. 내가 계속 / 전환 / 접기와 근거를 쓰면 Claude가 공격한다. 결정은 내가 한다.
@@ -132,8 +132,8 @@ PDF를 바로 읽을 수 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)
 /paper-critique map 비디오 생성 모델의 물리 일관성
 ```
 
-1. Claude가 slug를 제안한다(예: `video-physics`). 내가 확인하면 이후 `[주제]` 자리에 이 slug를 쓴다.
-2. 이 주제에 대해 아는 것과 예상 쟁점을 먼저 쓴다. 틀려도 괜찮다. 나중에 checkpoint에서 이 예측과 실제로 읽은 결과를 나란히 본다.
+1. Claude가 slug를 제안한다(예: `video-physics`). 내가 확인하면 이후 `[주제]` 자리에 이 slug를 사용한다.
+2. 이 주제에 대해 아는 것과 예상 쟁점을 먼저 사용한다. 틀려도 괜찮다. 나중에 checkpoint에서 이 예측과 실제로 읽은 결과를 나란히 본다.
 3. Claude가 후보 논문 15–30편과 계보·쟁점 초안을 준다. 목록을 보고 skim할 논문을 몇 편 고른다.
 4. 고른 논문을 skim한다.
 
@@ -141,7 +141,7 @@ PDF를 바로 읽을 수 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)
    /paper-critique skim papers/foo.pdf video-physics
    ```
 
-   abstract와 핵심 Figure를 보고 `drop — 평가가 합성 장면뿐`처럼 판정과 이유 한 줄을 먼저 쓴다. Claude가 사실 카드를 주고 판정을 반박하면, 최종 판정은 내가 정한다.
+   abstract와 핵심 Figure를 보고 `drop — 평가가 합성 장면뿐`처럼 판정과 이유 한 줄을 먼저 사용한다. Claude가 사실 카드를 주고 판정을 반박하면, 최종 판정은 내가 정한다.
 5. `deep`으로 판정한 논문은 같은 노트에서 `read`로 이어 깊게 읽는다. 지금 읽을지는 내가 정한다.
 6. skim 8편이나 deep 1편이 쌓이면 Claude가 checkpoint를 한 번 제안한다. 아직 이르다 싶으면 거절하고 계속 읽는다. 받아들이면 처음 쓴 예측, gap 항목, 판정 수를 보고 계속 / 전환 / 접기를 정한다.
 
@@ -217,7 +217,7 @@ my-papers/                          # 논문 폴더 (여기서 Claude Code 실�
 
 ## 커스터마이즈 포인트
 
-- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 쓴다. 기본값을 바꾸려면 `skills/paper-critique/references/read.md` Phase 1을 고친다.
+- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 사용한다. 기본값을 바꾸려면 `skills/paper-critique/references/read.md` Phase 1을 고친다.
 - lens 목록은 `skills/paper-critique/SKILL.md` `조력자 규칙`에 있다. 분야에 맞게 추가·삭제한다.
 - `synth`의 최소 실험 기준은 `gap-log.md`의 `연구 제약`을 따른다. 기본값은 로컬 GPU 없음(노트북).
 - `read` Phase 0–4는 `references/read.md`, `synth`는 `references/synth.md`, 주제 지도는 `references/map.md`, skim은 `references/skim.md`, checkpoint는 `references/checkpoint.md`에 있다. `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다. 모두 `skills/paper-critique/` 아래에 있다.
@@ -226,7 +226,7 @@ my-papers/                          # 논문 폴더 (여기서 Claude Code 실�
 
 ### 0.4.0
 
-- Codex CLI에서도 쓸 수 있다. 스킬 폴더 하나를 함께 쓴다. Codex용 `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, `skills/paper-critique/agents/openai.yaml`을 더했다.
+- Codex CLI에서도 쓸 수 있다. 스킬 폴더 하나를 함께 사용한다. Codex용 `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, `skills/paper-critique/agents/openai.yaml`을 더했다.
 - 스킬 본문에서 Claude Code 전용 표현을 뺐다. `WebSearch` 대신 "웹 검색"이라 쓰고, 검색을 쓸 수 없으면 `확인 불가`로 남긴다. PDF를 바로 읽을 수 없으면 `pdftotext`·`pdftoppm`으로 읽는다.
 - `## Claude 피드백`, `## Claude 반론`, `Claude 판단`은 기존 노트와 맞추기 위해 이름을 그대로 둔다. 스킬 문서의 "Claude"는 스킬을 실행하는 AI를 뜻한다.
 - 옛 `paper-study` 초안(`archive/`)을 지웠다.
@@ -240,7 +240,7 @@ my-papers/                          # 논문 폴더 (여기서 Claude Code 실�
 - `read <pdf> [주제]`로 깊게 읽는 논문도 주제에 넣을 수 있다. 주제 없이 읽은 논문은 checkpoint 횟수에 들어가지 않는다.
 - 새 폴더 `topics/`와 새 템플릿 `templates/skim-note.md`, `templates/topic.md`를 더했다. 노트에는 `depth`, `topics`, `skim_verdict` 필드가 생겼다. `depth`가 없는 기존 노트는 깊게 읽은 노트로 본다.
 - 주제 소속과 판정은 노트 frontmatter에만 둔다. 주제 파일 `## 노트`는 링크 목록이다.
-- `synth`는 끝까지 읽은 deep 노트 5편 이상을 권장 기준으로 삼는다. skim 노트는 보조 근거로만 쓴다. 접거나 바꾼 주제의 노트도 읽는다.
+- `synth`는 끝까지 읽은 deep 노트 5편 이상을 권장 기준으로 삼는다. skim 노트는 보조 근거로만 사용한다. 접거나 바꾼 주제의 노트도 읽는다.
 - `gap-log`에 `주제` 열이 생겼다. 기존 gap-log는 처음 항목을 쓸 때 열이 추가된다.
 - 구조: `read`와 `synth`의 세부 규칙을 문장 그대로 `references/read.md`, `references/synth.md`로 옮겼다. `SKILL.md`에는 절대 규칙, 조력자 규칙, 노트 상태, 모드 라우팅 표, 짧은 모드 규칙이 남는다.
 
