@@ -1,7 +1,7 @@
 ---
 name: paper-critique
 description: 사용자가 자기 답과 비판을 먼저 쓰는 대화형 논문 비판 읽기 훈련. 논문을 "같이 읽자/비판해보자"고 하거나, 읽던 논문을 이어 읽자고 하거나, /paper-critique로 호출할 때, 또는 쌓인 노트로 갭·연구 주제 후보를 찾자고 할 때(synth) 사용한다. 논문을 읽다가 모르는 용어·기법을 배우거나(learn), 배운 개념을 복습할 때(practice)도 사용한다. 처음 접하는 분야의 논문이라 배경부터 잡고 싶을 때(onboard, 선택)도 사용한다. 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡거나(map), 여러 논문을 사용자 판정 먼저 빠르게 거르거나(skim), 주제를 계속할지·바꿀지·접을지 돌아볼 때(checkpoint)도 사용한다. 단순 요약·번역·대리 리뷰 작성 요청에는 쓰지 않는다.
-argument-hint: "read <pdf 경로|노트> [주제] | map <주제> | skim <pdf|링크> [주제] | checkpoint [주제] | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
+argument-hint: "read <pdf 경로|노트> [주제] | map <주제 또는 논문 리스트> | skim <pdf|링크> [주제] | checkpoint [주제] | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
 ---
 
 # Paper Critique
@@ -133,12 +133,12 @@ topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 | 5 learn | `learn <개념> [노트]`, 개념 도움 뒤 제안 수락 | `references/learn.md`. skim 노트에는 붙이지 않는다(`references/skim.md`) |
 | 6 practice | `practice [N] [개념]`, "복습하자" | `references/practice.md` |
 | 7 onboard | `onboard <pdf>`, read Phase 0 제안 수락 | `references/onboard.md` |
-| 8 map | `map <주제>` | `references/map.md` |
+| 8 map | `map <주제>`, `map <논문 리스트>` | `references/map.md` |
 | 9 skim | `skim <pdf\|링크> [주제]` | `references/skim.md` |
 | 10 checkpoint | `checkpoint [주제]` | `references/checkpoint.md` |
 | read Phase 4 완료 | deep 노트가 `status: done`이 될 때 | 아래 "주제 연동" |
 
-- 모드 8 `map`: 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡자고 할 때 들어간다.
+- 모드 8 `map`: 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡자고 할 때, 또는 논문 몇 편을 주며 이걸로 지도를 만들자고 할 때 들어간다.
 - 모드 9 `skim`: map에서 고른 논문이나 사용자가 준 논문을 판정 먼저 빠르게 보자고 할 때 들어간다.
 - 모드 10 `checkpoint`: 사용자가 직접 부르거나, 트리거로 한 제안을 사용자가 수락할 때 들어간다.
 
