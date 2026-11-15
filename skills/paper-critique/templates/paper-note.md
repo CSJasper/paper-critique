@@ -11,6 +11,9 @@ phase: 0              # 0–4
 next:                 # 다음에 할 일 한 줄
 detour:               # learn 중인 개념의 <concept-slug>. 없으면 비움. next는 덮어쓰지 않음
 onboard: none         # none | in-progress | done | skipped
+depth: deep          # skim | deep. 없으면 deep으로 본다
+topics: []           # 이 노트가 속한 주제 slug
+skim_verdict:        # skim 판정 deep | done | drop. skim하지 않았으면 비움
 ---
 
 # {title}
