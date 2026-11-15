@@ -9,7 +9,7 @@
       "name": "paper-critique",
       "source": "./",
       "description": "대화형 논문 비판 읽기 훈련과 연구 주제 발굴",
-      "version": "0.2.0"
+      "version": "0.3.0"
     }
   ]
 }

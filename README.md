@@ -57,10 +57,13 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 논문 폴더에서 Claude Code를 실행한 뒤(플러그인 설치라면 `/paper-critique:paper-critique`로 바꿔 쓴다):
 
 ```
-/paper-critique read papers/xxx.pdf   # 논문 한 편 읽기
+/paper-critique read papers/xxx.pdf [주제]  # 논문 한 편 깊게 읽기 (주제를 주면 그 주제에 기록)
+/paper-critique map <주제>            # 주제 지도: 내 예측 → 후보 논문 풀 → 계보·쟁점 초안
+/paper-critique skim papers/xxx.pdf [주제]  # 판정 먼저(deep / done / drop), 사실 카드 나중
+/paper-critique checkpoint [주제]     # 주제를 계속할지·바꿀지·접을지 판단
 /paper-critique onboard papers/xxx.pdf  # 처음 보는 분야면 배경부터 (선택)
 /paper-critique resume                # 읽다 멈춘 논문 이어 읽기
-/paper-critique synth                 # 노트 5개 이상 쌓이면 교차 분석
+/paper-critique synth                 # deep 노트 5개 이상 쌓이면 교차 분석
 /paper-critique status                # 진행 현황
 /paper-critique learn <개념>          # 모르는 개념 배우기
 /paper-critique practice              # 배운 개념 복습
@@ -77,6 +80,16 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 5. 정리: 주장 강도, 다른 노트와 연결, 동의한 갭만 gap-log에 추가
 
 노트는 응답이 나올 때마다 저장되므로 언제 멈춰도 `resume`으로 이어갈 수 있다.
+
+## 흐름 (주제)
+
+논문 한 편이 아니라 주제 하나를 단위로 읽고 싶을 때 쓴다.
+
+1. `map`: 내가 이 주제에 대해 아는 것과 예상 쟁점을 먼저 쓴다. Claude는 그다음에 후보 논문 15–30편(링크와 찾은 출처만, 순서 매기기·추천 없음)과 주제 수준의 계보·쟁점 초안을 만든다. skim할 논문은 내가 고른다.
+2. `skim`: abstract와 핵심 Figure/Table을 직접 보고 `deep / done / drop`과 이유 한 줄을 먼저 쓴다. 그 뒤에 Claude가 사실 카드(평가 없음)를 주고 내 판정을 공격한다. 최종 판정은 내가 한다.
+3. `deep` 판정이면 같은 노트 파일에서 `read`로 승격한다. skim 기록은 그대로 남는다.
+4. `checkpoint`: 한 주제에서 skim 8편이나 deep 1편이 쌓이면 Claude가 한 번 제안한다. 내가 먼저 계속 / 전환 / 접기를 정하고, 거절하면 다음 트리거까지 다시 묻지 않는다.
+5. 주제를 접거나 바꿔도 노트와 gap-log는 그대로 남고 `synth`가 함께 읽는다. 나중에 바뀐 skim 판정은 주제 파일에 한 줄씩 남아 checkpoint에서 돌아본다.
 
 ## 지쳤을 때
 
@@ -103,16 +116,17 @@ notes/       논문당 노트
 gap-log.md   연구 제약 + 갭·의문 누적
 synthesis/   synth 결과
 concepts/    개념 노트 (논문을 넘어 누적)
+topics/      주제 파일 (예측, 후보 풀, 기록, checkpoint)
 ```
 
 노트 폴더는 git으로 관리하는 걸 권장. Obsidian vault로 열면 `[[링크]]`가 그래프로 보인다.
 
 ## 커스터마이즈 포인트
 
-- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 쓴다. 기본값을 바꾸려면 `skills/paper-critique/SKILL.md` Phase 1을 고친다.
+- 이해도 점검이 부담되면 `skip`(현재 질문) / `skip phase`(전체)나 light mode를 쓴다. 기본값을 바꾸려면 `skills/paper-critique/references/read.md` Phase 1을 고친다.
 - lens 목록은 `skills/paper-critique/SKILL.md` `조력자 규칙`에 있다. 분야에 맞게 추가·삭제한다.
 - `synth`의 최소 실험 기준은 `gap-log.md`의 `연구 제약`을 따른다. 기본값은 로컬 GPU 없음(노트북).
-- `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다(모두 `skills/paper-critique/` 아래).
+- `read` Phase 0–4는 `references/read.md`, `synth`는 `references/synth.md`, 주제 지도는 `references/map.md`, skim은 `references/skim.md`, checkpoint는 `references/checkpoint.md`에 있다. `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다(모두 `skills/paper-critique/` 아래).
 
 ## 참고한 것
 
