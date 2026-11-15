@@ -1,7 +1,7 @@
 ---
 name: paper-critique
-description: 사용자가 자기 답과 비판을 먼저 쓰는 대화형 논문 비판 읽기 훈련. 논문을 "같이 읽자/비판해보자"고 하거나, 읽던 논문을 이어 읽자고 하거나, /paper-critique로 호출할 때, 또는 쌓인 노트로 갭·연구 주제 후보를 찾자고 할 때(synth) 사용한다. 논문을 읽다가 모르는 용어·기법을 배우거나(learn), 배운 개념을 복습할 때(practice)도 사용한다. 처음 접하는 분야의 논문이라 배경부터 잡고 싶을 때(onboard, 선택)도 사용한다. 단순 요약·번역·대리 리뷰 작성 요청에는 쓰지 않는다.
-argument-hint: "read <pdf 경로> | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
+description: 사용자가 자기 답과 비판을 먼저 쓰는 대화형 논문 비판 읽기 훈련. 논문을 "같이 읽자/비판해보자"고 하거나, 읽던 논문을 이어 읽자고 하거나, /paper-critique로 호출할 때, 또는 쌓인 노트로 갭·연구 주제 후보를 찾자고 할 때(synth) 사용한다. 논문을 읽다가 모르는 용어·기법을 배우거나(learn), 배운 개념을 복습할 때(practice)도 사용한다. 처음 접하는 분야의 논문이라 배경부터 잡고 싶을 때(onboard, 선택)도 사용한다. 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡거나(map), 여러 논문을 사용자 판정 먼저 빠르게 거르거나(skim), 주제를 계속할지·바꿀지·접을지 돌아볼 때(checkpoint)도 사용한다. 단순 요약·번역·대리 리뷰 작성 요청에는 쓰지 않는다.
+argument-hint: "read <pdf 경로> [주제] | map <주제> | skim <pdf|링크> [주제] | checkpoint [주제] | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
 ---
 
 # Paper Critique
@@ -26,6 +26,12 @@ Claude의 역할은 다섯이다.
    - 도움 요청은 표현 그대로 따른다 ("설명해줘", "예시 보여줘", "그냥 알려줘" 등). 특정 문구를 요구하지 않는다.
    - "모르겠다"에는 억지로 추측시키지 않는다. 모르는 것이 용어·기호·기법이면 개념 도움, 판단이 안 서는 것이면 조력 단계로 간다.
    - `synth`는 예외다. Claude가 먼저 패턴과 후보를 제안하고, 채택은 사용자가 한다.
+   - `skim`은 판정 전후로 범위가 다르다(skim 예외).
+     - 사용자가 판정을 기록하기 전에는 이 논문의 (b)·(c)에 대한 Claude의 요약·설명·평가를 보여주지 않는다. "설명해줘"라고 해도 그 내용이 있는 위치(`p.N`, Figure/Table)만 안내한다.
+     - `full`("그냥 알려줘")은 판정이 기록된 뒤에만 따른다.
+     - (a) 배경 개념 설명은 기존 규칙대로 바로 한다.
+     - 판정이 기록된 뒤의 사실 카드는 (b)의 예외다. 평가는 담지 않는다.
+     - skim 중에는 learn·onboard·light mode를 제안하지 않는다.
 2. **근거는 논문 위치로.** Claude가 논문 내용에 대해 하는 모든 주장에 섹션/페이지/Figure/Table 번호를 단다. 페이지는 PDF 페이지 기준 `p.N`으로 쓴다. 출처를 구분한다.
    - 표시 없음: 논문에 보고된 내용
    - `[해석]`: 논문 근거에서 Claude가 도출한 해석
@@ -98,9 +104,11 @@ notes/         # 논문당 노트 1개: <first-author><year>-<short-title>.md
 gap-log.md     # 연구 제약 + 갭·의문·아이디어 누적
 synthesis/     # synth 결과: YYYY-MM-DD.md
 concepts/      # 개념당 노트 1개: <concept-slug>.md (개념 도움·learn·practice가 씀)
+topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 ```
 
 쓰기가 필요한 모드(`read`, `onboard`, `synth`, `learn`)를 처음 실행할 때 없는 폴더를 만든다. practice는 폴더를 만들지 않는다. `concepts/*.md`만 개념 노트로 읽는다(하위 폴더 `concepts/toy/`는 제외). 노트 템플릿은 이 스킬 폴더의 `templates/paper-note.md`, 갭 로그는 `templates/gap-log.md`를 쓴다. 개념 템플릿은 `templates/concept.md`.
+`map`·`skim`·`checkpoint`도 쓰기가 필요한 모드다. skim 노트 템플릿은 `templates/skim-note.md`, 주제 파일 템플릿은 `templates/topic.md`를 쓴다.
 
 ## 노트 상태와 재개
 
@@ -111,6 +119,37 @@ concepts/      # 개념당 노트 1개: <concept-slug>.md (개념 도움·learn�
 - 재개할 때 `detour`가 있으면 `concepts/<concept-slug>.md`의 learn을 `learn_next`부터 먼저 이어간다. 단 그 개념의 `learn_state`가 `in-progress`가 아니면 `detour`를 지우고 `next`로 간다. 끝나면 `detour`를 지우고 `next`로 돌아간다. `조력 기록`의 learn 제안 거절도 읽는다.
 - `detour`가 없을 때(또는 그 learn이 끝난 뒤) `from_note`가 이 노트인 `paused` 개념이 있으면 재개할 때 `next`보다 먼저 한 줄로 언급하고 이어갈지 묻는다. 사용자 답을 듣고 나서 `next`를 묻는다. 자동으로 들어가지 않는다. 이어가겠다고 하면 모드 5로 간다.
 - `onboard: in-progress`면 온보딩 중이다(`phase`는 0, `next`는 온보딩 위치). 재개할 때 `references/onboard.md`의 재개를 따라 `next`부터 온보딩을 이어간다.
+- 노트를 이어가거나 Phase 1–4를 진행할 때 `depth: skim`이면 `references/skim.md`, 아니면 `references/read.md`를 먼저 읽는다.
+
+## 모드 라우팅
+
+| 모드 | 진입 | 먼저 읽을 것 |
+|---|---|---|
+| 1 read | `read <pdf> [주제]`, "같이 읽자/비판해보자" | `references/read.md` |
+| 2 synth | `synth`, 쌓인 노트로 갭·주제 후보 찾기 | `references/synth.md` |
+| 3 status | `status` | 이 파일 모드 3 |
+| 4 resume | `resume`, "이어 읽자" | 이 파일 모드 4 |
+| 재개 | resume, onboard 끝, learn 복귀, skim 승격 | 노트 `depth`별 reference ("노트 상태와 재개") |
+| 5 learn | `learn <개념> [노트]`, 개념 도움 뒤 제안 수락 | `references/learn.md` |
+| 6 practice | `practice [N] [개념]`, "복습하자" | `references/practice.md` |
+| 7 onboard | `onboard <pdf>`, read Phase 0 제안 수락 | `references/onboard.md` |
+| 8 map | `map <주제>` | `references/map.md` |
+| 9 skim | `skim <pdf\|링크> [주제]` | `references/skim.md` |
+| 10 checkpoint | `checkpoint [주제]` | `references/checkpoint.md` |
+| read Phase 4 완료 | deep 노트가 `status: done`이 될 때 | 아래 "주제 연동" |
+
+- 모드 8 `map`: 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡자고 할 때 들어간다.
+- 모드 9 `skim`: map에서 고른 논문이나 사용자가 준 논문을 판정 먼저 빠르게 보자고 할 때 들어간다.
+- 모드 10 `checkpoint`: 사용자가 직접 부르거나, 트리거로 한 제안을 사용자가 수락할 때 들어간다.
+
+## 주제 연동
+
+1. 주제 소속의 유일한 출처는 노트 frontmatter `topics`다. 주제 파일 `## 노트`는 append-only 링크 목록이고 skim, `read <pdf> [주제]`, checkpoint 전환만 링크를 덧붙인다. 집계와 판정은 노트 frontmatter에서 읽는다.
+2. `read`·`skim`·`checkpoint`에 `[주제]`로 준 `topics/<slug>.md`가 없으면 없다고 말하고 `map`을 제안한다. 이때 주제 파일을 새로 만들지 않고 노트 `topics`에도 넣지 않는다.
+3. 노트에 `topics`가 있으면 skim 판정이 확정될 때나 deep 노트가 `status: done`이 될 때(read Phase 4 마지막 줄 직후) 각 주제 파일 `## 기록`에 `skim` 또는 `deep 완료` 줄을 쓰고 `references/checkpoint.md`의 트리거를 확인한다.
+4. `read <pdf> [주제]`로 시작하면 노트 `topics`에 그 slug를 넣고 주제 `## 노트`에 링크를 덧붙인다(이미 있으면 생략). 기존 노트에 `read <노트> [주제]`를 하면 slug와 링크만 더하고 노트의 다른 내용과 상태는 그대로 둔 채 평소처럼 재개한다. 주제 없이 읽은 노트는 checkpoint 트리거에 들어가지 않는다.
+5. gap-log에 항목을 쓸 때 출처 노트의 `topics`를 `주제` 열에 쓴다(없으면 비움). `주제` 열이 없는 gap-log는 처음 쓸 때 헤더에 열을 넣고 기존 행은 비워 둔다.
+6. `depth`가 없으면 deep, `topics`가 없으면 주제 없음으로 본다. 기존 노트는 마이그레이션하지 않는다.
 
 ## 모드 1: `read <pdf>` — 논문 한 편
 
@@ -123,8 +162,10 @@ concepts/      # 개념당 노트 1개: <concept-slug>.md (개념 도움·learn�
 ## 모드 3: `status`
 
 파일을 만들거나 고치지 않는다. 다음을 짧게 보여준다.
-- 노트 수 (`done / in-progress / paused`), 진행 중인 노트와 각 `next`(`onboard: in-progress`면 온보딩 중이라고 표시)
+- 노트 수를 deep(`done / in-progress / paused`)과 skim(판정 완료 / 진행 중 / deep 대기)으로 나눠 센다. `depth`가 없으면 deep이다. deep 대기는 `depth: skim`이고 `skim_verdict: deep`인 노트(아직 승격 전)이며 이름도 나열한다. 진행 중인 노트와 각 `next`(`onboard: in-progress`면 온보딩 중이라고 표시)
 - 최근 읽은 논문 5개
+  - 최근 목록에는 skim 노트도 넣고 이름 옆에 (skim)을 단다. 완료로 세는 것은 depth가 deep인 `done` 노트뿐이다.
+- 주제별 `slug · status · skim N · deep N · checkpoint까지 skim M편 남음`. N은 노트 frontmatter `topics`에 그 slug가 있는 노트를 depth별로 센 수다. M = 8 − (기준선 이후 `skim` 줄 수)이고 기준선은 `references/checkpoint.md`를 따른다. 기준선 이후 `deep 완료` 줄이 있으면 M 대신 `제안`, `## 기록` 마지막 줄이 답을 받지 못한 `checkpoint 제안`이면 `제안 대기`로 표시한다. dropped·pivoted 주제도 넣는다. `topics/`가 없으면 생략한다.
 - gap-log 열린 항목 수 (`open + promising`)
 - 마지막 synth 날짜
 - 개념 노트 상태별 수(`introduced / checked / held`), `learn_state: skipped` 수, `in-progress`·`paused` learn 목록(`from_note`가 있으면 "논문 노트에서 멈춘 learn"으로 노트 이름과 함께, 없으면 논문 없는 learn), 가장 오래 복습 안 한 `checked` 3개(정렬은 모드 6과 같다). `concepts/`가 없으면 생략한다.
@@ -132,6 +173,7 @@ concepts/      # 개념당 노트 1개: <concept-slug>.md (개념 도움·learn�
 ## 모드 4: `resume`
 
 인자 없이 "이어 읽자"고 해도 이 모드다. `in-progress`나 `paused` 노트 중 가장 최근 것을 재개한다. 여러 개면 목록을 보여주고 하나를 고르게 한다. 재개 방법은 "노트 상태와 재개"를 따른다.
+`depth: skim`이고 `status: in-progress`인 노트(판정 전 skim)는 후보에 넣고 종류를 skim으로 표시한다. 판정을 마친 skim 노트(`status: done`)는 넣지 않는다.
 `detour`가 있는 노트는 learn부터 이어간다. 후보에는 논문 없는 learn, 즉 `from_note`가 비어 있는 `in-progress`·`paused` 개념 노트도 넣는다. `from_note`의 노트가 `done`이거나 없는 paused learn도 넣는다. 그 밖에 `from_note`가 있는 paused learn은 목록에 넣지 않고, 그 노트를 재개할 때 언급만 한다(제안만, 자동 진입 금지). 노트 하나와 개념 하나만 있어도 후보가 둘이므로 종류와 함께 목록을 보여주고 고르게 한다. 개념을 고르면 모드 5로 `learn_next`부터 이어간다.
 
 ## 모드 5: `learn <개념> [노트이름]`
