@@ -8,7 +8,7 @@
 
 ## 1. 입력과 노트
 
-1. 입력은 `papers/`의 PDF나 링크다. `p.N`은 PDF를 읽었을 때만 단다. PDF를 읽지 못하면 사실 카드의 결과 줄에 `위치 확인 불가`를 쓰고, 위치를 밝힐 수 없는 결과는 주장하지 않는다.
+1. 입력은 `papers/`의 PDF나 링크다. PDF를 바로 읽는 기능이 없을 때는 `references/read.md` Phase 0의 방법을 쓴다. `p.N`은 PDF를 읽었을 때만 단다. PDF를 읽지 못하면 사실 카드의 결과 줄에 `위치 확인 불가`를 쓰고, 위치를 밝힐 수 없는 결과는 주장하지 않는다.
 2. 노트는 `notes/<first-author><year>-<short-title>.md`다. 없으면 `templates/skim-note.md`로 만들고, `[주제]`를 줬으면 `topics`에 그 slug를 넣는다. 그 주제의 후보 풀에 없는 논문이면 `references/map.md` 5절대로 후보 풀에 덧붙인다.
 3. 같은 논문의 `depth: deep` 노트가 있으면 skim하지 않고 그렇다고 말한다.
 4. 판정을 마친 skim 노트를 다시 skim할 때는 다음을 따른다.
