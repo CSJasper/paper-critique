@@ -85,11 +85,14 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 
 논문 한 편이 아니라 주제 하나를 단위로 읽고 싶을 때 쓴다.
 
-1. `map`: 내가 이 주제에 대해 아는 것과 예상 쟁점을 먼저 쓴다. Claude는 그다음에 후보 논문 15–30편(링크와 찾은 출처만, 순서 매기기·추천 없음)과 주제 수준의 계보·쟁점 초안을 만든다. skim할 논문은 내가 고른다.
-2. `skim`: abstract와 핵심 Figure/Table을 직접 보고 `deep / done / drop`과 이유 한 줄을 먼저 쓴다. 그 뒤에 Claude가 사실 카드(평가 없음)를 주고 내 판정을 공격한다. 최종 판정은 내가 한다.
-3. `deep` 판정이면 같은 노트 파일에서 `read`로 승격한다. skim 기록은 그대로 남는다.
-4. `checkpoint`: 한 주제에서 skim 8편이나 deep 1편이 쌓이면 Claude가 한 번 제안한다. 내가 먼저 계속 / 전환 / 접기를 정하고, 거절하면 다음 트리거까지 다시 묻지 않는다.
-5. 주제를 접거나 바꿔도 노트와 gap-log는 그대로 남고 `synth`가 함께 읽는다. 나중에 바뀐 skim 판정은 주제 파일에 한 줄씩 남아 checkpoint에서 돌아본다.
+1. `map`: 먼저 주제 이름(slug)을 정한다. Claude가 하나를 제안하고 내가 확인하면, 이후 `skim`·`read`·`checkpoint`의 `[주제]`에는 이 slug를 쓴다. 그다음 내가 이 주제에 대해 아는 것과 예상 쟁점을 쓴다. Claude는 그 뒤에 후보 논문 15–30편(제목·연도·링크·찾은 출처만, 순서 매기기·추천 없음)과 주제 수준의 계보·쟁점 초안을 만든다. 초안에는 "이번에 찾은 자료 범위 안에서"라는 단서를 달고, 검색으로 확인하지 않은 주장은 `[추측]`으로 표시한다. skim할 논문은 내가 고른다.
+2. `skim`: abstract와 핵심 Figure/Table을 직접 보고 `deep / done / drop`과 이유 한 줄을 먼저 쓴다. 판정 전에는 "설명해줘"라고 해도 Claude가 이 논문의 방법을 설명하지 않고 볼 위치만 알려 준다. 판정을 쓰면 Claude가 사실 카드(문제, 방법 한 줄, 핵심 결과와 쪽 번호, 평가 없음)를 주고 내 판정을 공격한다. 최종 판정은 내가 한다. 후보 풀에 없는 논문도 skim할 수 있고, 그 논문은 후보 풀에 덧붙는다.
+3. `deep` 판정이면 같은 노트 파일에서 `read`로 승격한다. skim 기록은 그대로 남는다. 판정 없이 바로 깊게 읽겠다고 해도 된다.
+4. 이미 판정한 논문을 다시 skim하면 새 판정은 아래에 덧붙고, 같은 논문을 두 번 세지 않는다.
+5. `checkpoint`: 한 주제에서 skim 8편이나 deep 1편이 쌓이면 Claude가 한 번 제안한다. 거절하면 다음 트리거까지 다시 묻지 않는다. 수락하면 Claude가 판단 재료(처음 쓴 내 예측, 이 주제의 gap 항목, 판정 보정 기록, skim·deep 수)를 평가 없이 먼저 보여 준다. 내가 계속 / 전환 / 접기와 근거를 쓰면 Claude가 공격하고, 결정은 내가 한다.
+6. 접을 때는 접는 이유와 다시 열 조건을 내 말로 남긴다. 방향을 바꾸면 새 주제 파일이 생기고, 이어 쓸 노트는 내가 고른다.
+7. 주제를 접거나 바꿔도 노트와 gap-log는 그대로 남고 `synth`가 함께 읽는다. 나중에 바뀐 skim 판정(예: drop이었던 논문을 다시 깊게 읽음)은 주제 파일에 한 줄씩 남아 checkpoint에서 돌아본다.
+8. `status`는 주제마다 skim·deep 수와 checkpoint까지 남은 skim 수를 보여 준다. 파일은 고치지 않는다.
 
 ## 지쳤을 때
 
@@ -99,6 +102,7 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 - lens 예: baseline 공정성, 자원 맞춤, ablation, metric validity, data leakage, 통계, 외삽, 대안 설명
 - "피곤해"라고 하면 light mode: claim 하나만 보고 나머지는 미검토로 남긴 뒤 다음에 이어간다.
 - "그만"이라고 하면 바로 저장하고 멈춘다.
+- skim 중에는 판정 전에 nudge와 lens(볼 위치 안내)까지만 돕는다. 피곤하다고 하면 light mode 대신 여기서 멈출지 묻고, 멈추면 다음에 같은 단계부터 이어간다.
 
 ## 모르는 개념이 나올 때
 
@@ -127,6 +131,20 @@ topics/      주제 파일 (예측, 후보 풀, 기록, checkpoint)
 - lens 목록은 `skills/paper-critique/SKILL.md` `조력자 규칙`에 있다. 분야에 맞게 추가·삭제한다.
 - `synth`의 최소 실험 기준은 `gap-log.md`의 `연구 제약`을 따른다. 기본값은 로컬 GPU 없음(노트북).
 - `read` Phase 0–4는 `references/read.md`, `synth`는 `references/synth.md`, 주제 지도는 `references/map.md`, skim은 `references/skim.md`, checkpoint는 `references/checkpoint.md`에 있다. `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다(모두 `skills/paper-critique/` 아래).
+
+## 변경 기록
+
+### 0.3.0
+
+논문을 한 편씩 같은 깊이로 읽으면 연구 주제를 찾는 데 너무 느려서, 주제 단위로 위에서부터 읽는 흐름을 더했다. 깊게 읽을 때의 원칙(내가 먼저 생각하고 Claude가 공격, 근거는 논문 위치로, 아첨 금지)은 그대로다.
+
+- 새 모드: `map`(주제 지도), `skim`(판정 먼저 빠르게 읽기), `checkpoint`(계속 / 전환 / 접기).
+- `read <pdf> [주제]`로 깊게 읽는 논문도 주제에 넣을 수 있다. 주제 없이 읽은 논문은 checkpoint 횟수에 들어가지 않는다.
+- 새 폴더 `topics/`와 새 템플릿 `templates/skim-note.md`, `templates/topic.md`. 노트에 `depth`, `topics`, `skim_verdict` 필드가 생겼다. `depth`가 없는 기존 노트는 깊게 읽은 노트로 본다.
+- 주제 소속과 판정은 노트 frontmatter에만 둔다. 주제 파일 `## 노트`는 링크 목록이다.
+- `synth`는 끝까지 읽은 deep 노트 5편 이상을 권장 기준으로 세고, skim 노트는 보조 근거로만 쓴다. 접거나 바꾼 주제의 노트도 읽는다.
+- `gap-log`에 `주제` 열이 생겼다. 기존 gap-log는 처음 항목을 쓸 때 열이 추가된다.
+- 구조: `read`와 `synth`의 세부 규칙을 문장 그대로 `references/read.md`, `references/synth.md`로 옮겼다. `SKILL.md`에는 절대 규칙, 조력자 규칙, 노트 상태, 모드 라우팅 표와 짧은 모드 규칙이 남는다.
 
 ## 참고한 것
 
