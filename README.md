@@ -52,9 +52,35 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 
 이 방식이면 `/paper-critique read ...`처럼 접두사 없이 부른다. 플러그인과 함께 설치하면 같은 스킬이 두 번 잡히므로 하나만 쓴다.
 
+### Codex에서 쓰기
+
+같은 스킬 폴더를 Codex CLI에서도 쓴다. 둘 중 하나로 설치한다.
+
+플러그인으로 설치:
+
+```bash
+codex plugin marketplace add https://github.com/CSJasper/paper-critique.git
+codex plugin add paper-critique@paper-critique
+```
+
+스킬로 직접 설치 (clone한 repo에서 고친 내용이 바로 반영됨):
+
+```bash
+mkdir -p ~/.agents/skills
+ln -s <원하는 경로>/skills/paper-critique ~/.agents/skills/paper-critique
+```
+
+Codex에서는 `$paper-critique read papers/xxx.pdf`처럼 `$`로 부르거나 `/skills`에서 고른다. 자연어로 불러도 된다. 후보 논문 검색과 synth의 선행 연구 확인에 웹 검색을, 노트 저장에 쓰기 권한을 쓰므로 논문 폴더에서 이렇게 실행한다.
+
+```bash
+codex --search --sandbox workspace-write
+```
+
+PDF를 바로 읽는 기능이 없는 환경에서는 `pdftotext`, `pdftoppm`(poppler)으로 읽으므로 설치해 두면 좋다(`brew install poppler`).
+
 ## 사용
 
-논문 폴더에서 Claude Code를 실행한 뒤(플러그인 설치라면 `/paper-critique:paper-critique`로 바꿔 쓴다):
+논문 폴더에서 Claude Code를 실행한 뒤(플러그인 설치라면 `/paper-critique:paper-critique`로, Codex라면 `$paper-critique`로 바꿔 쓴다):
 
 ```
 /paper-critique read papers/xxx.pdf [주제]  # 논문 한 편 깊게 읽기 (주제를 주면 그 주제에 기록)
@@ -197,6 +223,13 @@ my-papers/                          # 논문 폴더 (여기서 Claude Code 실�
 - `read` Phase 0–4는 `references/read.md`, `synth`는 `references/synth.md`, 주제 지도는 `references/map.md`, skim은 `references/skim.md`, checkpoint는 `references/checkpoint.md`에 있다. `learn` 방법론은 `references/learn.md`, 온보딩은 `references/onboard.md`, 복습은 `references/practice.md`에 있다(모두 `skills/paper-critique/` 아래).
 
 ## 변경 기록
+
+### 0.4.0
+
+- Codex CLI에서도 쓸 수 있다. 스킬 폴더는 하나를 같이 쓴다. Codex용 `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, `skills/paper-critique/agents/openai.yaml`을 더했다.
+- 스킬 본문에서 Claude Code 전용 표현을 뺐다. `WebSearch` 대신 "웹 검색"이라 쓰고, 검색을 쓸 수 없으면 `확인 불가`로 남긴다. PDF를 바로 읽는 기능이 없으면 `pdftotext`·`pdftoppm`으로 읽는다.
+- `## Claude 피드백`, `## Claude 반론`, `Claude 판단`은 기존 노트와 맞추려고 이름을 그대로 둔다. 스킬 문서의 "Claude"는 스킬을 실행하는 AI를 뜻한다.
+- 옛 `paper-study` 초안(`archive/`)을 지웠다.
 
 ### 0.3.0
 

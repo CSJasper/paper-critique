@@ -1,0 +1,6 @@
+{
+  "name": "paper-critique",
+  "version": "0.4.0",
+  "description": "대화형 논문 비판 읽기 훈련과 연구 주제 발굴",
+  "skills": "./skills/"
+}
