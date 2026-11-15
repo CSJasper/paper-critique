@@ -63,7 +63,7 @@ ln -s <원하는 경로>/skills/paper-critique <논문폴더>/.claude/skills/pap
 /paper-critique checkpoint [주제]     # 주제를 계속할지·바꿀지·접을지 판단
 /paper-critique onboard papers/xxx.pdf  # 처음 보는 분야면 배경부터 (선택)
 /paper-critique resume                # 읽다 멈춘 논문 이어 읽기
-/paper-critique synth                 # deep 노트 5개 이상 쌓이면 교차 분석
+/paper-critique synth                 # 완료한 deep 노트 5개 이상 쌓이면 교차 분석
 /paper-critique status                # 진행 현황
 /paper-critique learn <개념>          # 모르는 개념 배우기
 /paper-critique practice              # 배운 개념 복습

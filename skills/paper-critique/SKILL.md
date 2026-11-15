@@ -1,7 +1,7 @@
 ---
 name: paper-critique
 description: 사용자가 자기 답과 비판을 먼저 쓰는 대화형 논문 비판 읽기 훈련. 논문을 "같이 읽자/비판해보자"고 하거나, 읽던 논문을 이어 읽자고 하거나, /paper-critique로 호출할 때, 또는 쌓인 노트로 갭·연구 주제 후보를 찾자고 할 때(synth) 사용한다. 논문을 읽다가 모르는 용어·기법을 배우거나(learn), 배운 개념을 복습할 때(practice)도 사용한다. 처음 접하는 분야의 논문이라 배경부터 잡고 싶을 때(onboard, 선택)도 사용한다. 주제 하나를 정해 후보 논문과 쟁점 지도부터 잡거나(map), 여러 논문을 사용자 판정 먼저 빠르게 거르거나(skim), 주제를 계속할지·바꿀지·접을지 돌아볼 때(checkpoint)도 사용한다. 단순 요약·번역·대리 리뷰 작성 요청에는 쓰지 않는다.
-argument-hint: "read <pdf 경로> [주제] | map <주제> | skim <pdf|링크> [주제] | checkpoint [주제] | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
+argument-hint: "read <pdf 경로|노트> [주제] | map <주제> | skim <pdf|링크> [주제] | checkpoint [주제] | onboard <pdf 경로> | resume | learn <개념> [노트] | practice [N] [개념] | synth | status"
 ---
 
 # Paper Critique
@@ -130,7 +130,7 @@ topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 | 3 status | `status` | 이 파일 모드 3 |
 | 4 resume | `resume`, "이어 읽자" | 이 파일 모드 4 |
 | 재개 | resume, onboard 끝, learn 복귀, skim 승격 | 노트 `depth`별 reference ("노트 상태와 재개") |
-| 5 learn | `learn <개념> [노트]`, 개념 도움 뒤 제안 수락 | `references/learn.md` |
+| 5 learn | `learn <개념> [노트]`, 개념 도움 뒤 제안 수락 | `references/learn.md`. skim 노트에는 붙이지 않는다(`references/skim.md`) |
 | 6 practice | `practice [N] [개념]`, "복습하자" | `references/practice.md` |
 | 7 onboard | `onboard <pdf>`, read Phase 0 제안 수락 | `references/onboard.md` |
 | 8 map | `map <주제>` | `references/map.md` |
@@ -145,8 +145,8 @@ topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 ## 주제 연동
 
 1. 주제 소속의 유일한 출처는 노트 frontmatter `topics`다. 주제 파일 `## 노트`는 append-only 링크 목록이고 skim, `read <pdf> [주제]`, checkpoint 전환만 링크를 덧붙인다. 집계와 판정은 노트 frontmatter에서 읽는다.
-2. `read`·`skim`·`checkpoint`에 `[주제]`로 준 `topics/<slug>.md`가 없으면 없다고 말하고 `map`을 제안한다. 이때 주제 파일을 새로 만들지 않고 노트 `topics`에도 넣지 않는다.
-3. 노트에 `topics`가 있으면 skim 판정이 확정될 때나 deep 노트가 `status: done`이 될 때(read Phase 4 마지막 줄 직후) 각 주제 파일 `## 기록`에 `skim` 또는 `deep 완료` 줄을 쓰고 `references/checkpoint.md`의 트리거를 확인한다.
+2. `[주제]`는 slug다. `read`·`skim`·`checkpoint`에 준 `[주제]`가 `topics/`의 파일 이름과 정확히 맞지 않으면 없다고 말하고, 기존 slug 목록을 보여 주며 그중 하나인지 묻거나 `map`을 제안한다. 이때 주제 파일을 새로 만들지 않고 노트 `topics`에도 넣지 않는다.
+3. 노트에 `topics`가 있으면 skim 판정이 확정될 때나 deep 노트가 `status: done`이 될 때(read Phase 4 마지막 줄 직후) 각 주제 파일 `## 기록`에 `skim` 또는 `deep 완료` 줄을 쓰고(다시 skim한 노트는 `skim` 줄을 쓰지 않는다) `references/checkpoint.md`의 트리거를 확인한다.
 4. `read <pdf> [주제]`로 시작하면 노트 `topics`에 그 slug를 넣고 주제 `## 노트`에 링크를 덧붙인다(이미 있으면 생략). 기존 노트에 `read <노트> [주제]`를 하면 slug와 링크만 더하고 노트의 다른 내용과 상태는 그대로 둔 채 평소처럼 재개한다. 주제 없이 읽은 노트는 checkpoint 트리거에 들어가지 않는다.
 5. gap-log에 항목을 쓸 때 출처 노트의 `topics`를 `주제` 열에 쓴다(없으면 비움). `주제` 열이 없는 gap-log는 처음 쓸 때 헤더에 열을 넣고 기존 행은 비워 둔다.
 6. `depth`가 없으면 deep, `topics`가 없으면 주제 없음으로 본다. 기존 노트는 마이그레이션하지 않는다.
@@ -164,8 +164,8 @@ topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 파일을 만들거나 고치지 않는다. 다음을 짧게 보여준다.
 - 노트 수를 deep(`done / in-progress / paused`)과 skim(판정 완료 / 진행 중 / deep 대기)으로 나눠 센다. `depth`가 없으면 deep이다. deep 대기는 `depth: skim`이고 `skim_verdict: deep`인 노트(아직 승격 전)이며 이름도 나열한다. 진행 중인 노트와 각 `next`(`onboard: in-progress`면 온보딩 중이라고 표시)
 - 최근 읽은 논문 5개
-  - 최근 목록에는 skim 노트도 넣고 이름 옆에 (skim)을 단다. 완료로 세는 것은 depth가 deep인 `done` 노트뿐이다.
-- 주제별 `slug · status · skim N · deep N · checkpoint까지 skim M편 남음`. N은 노트 frontmatter `topics`에 그 slug가 있는 노트를 depth별로 센 수다. M = 8 − (기준선 이후 `skim` 줄 수)이고 기준선은 `references/checkpoint.md`를 따른다. 기준선 이후 `deep 완료` 줄이 있으면 M 대신 `제안`, `## 기록` 마지막 줄이 답을 받지 못한 `checkpoint 제안`이면 `제안 대기`로 표시한다. dropped·pivoted 주제도 넣는다. `topics/`가 없으면 생략한다.
+  - 최근 목록에는 skim 노트도 넣고 이름 옆에 (skim)을 단다. 완료로 세는 것은 depth가 deep인 `done` 노트뿐이다. 정렬은 `read_date` 최신순이고, 같으면 파일 수정 시각이 늦은 순이다.
+- 주제별 `slug · status · skim N · deep N · checkpoint까지 skim M편 남음`. N은 노트 frontmatter `topics`에 그 slug가 있는 노트를 depth별로 센 수다. M = 8 − (기준선 이후 `skim` 줄 수)이고 기준선은 `references/checkpoint.md`를 따른다. 기준선 이후 `deep 완료` 줄이 있거나 M ≤ 0이면 M 대신 `제안`, `## 기록` 마지막 줄이 답을 받지 못한 `checkpoint 제안`이면 `제안 대기`로 표시한다. paused·dropped·pivoted 주제도 넣되 M 대신 `—`를 쓴다. `topics/`가 없으면 생략한다.
 - gap-log 열린 항목 수 (`open + promising`)
 - 마지막 synth 날짜
 - 개념 노트 상태별 수(`introduced / checked / held`), `learn_state: skipped` 수, `in-progress`·`paused` learn 목록(`from_note`가 있으면 "논문 노트에서 멈춘 learn"으로 노트 이름과 함께, 없으면 논문 없는 learn), 가장 오래 복습 안 한 `checked` 3개(정렬은 모드 6과 같다). `concepts/`가 없으면 생략한다.
