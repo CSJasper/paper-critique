@@ -161,14 +161,31 @@ Claude는 목록만 정리해서(제목·연도·링크) 보여 준다. slug를 
 
 ## 논문 폴더 구조
 
+Claude Code를 실행하는 논문 폴더는 아래처럼 된다. 직접 넣는 것은 `papers/`의 PDF뿐이고, 나머지 파일과 폴더는 처음 쓰는 모드가 만든다. 파일 이름은 예시다.
+
 ```
-papers/      PDF
-notes/       논문당 노트
-gap-log.md   연구 제약 + 갭·의문 누적
-synthesis/   synth 결과
-concepts/    개념 노트 (논문을 넘어 누적)
-topics/      주제 파일 (예측, 후보 풀, 기록, checkpoint)
+my-papers/                          # 논문 폴더 (여기서 Claude Code 실행)
+├── papers/                         # PDF 원본, 직접 넣는다
+│   ├── kim2024-physbench.pdf
+│   └── lee2025-physgen.pdf
+├── notes/                          # 논문당 노트 1개: <first-author><year>-<short-title>.md
+│   ├── kim2024-physbench.md        #   read로 깊게 읽은 노트 (depth 없음 = deep)
+│   └── lee2025-physgen.md          #   skim 노트 (depth: skim), deep이면 같은 파일에서 read로 승격
+├── topics/                         # 주제당 파일 1개: <slug>.md (map·skim·checkpoint)
+│   └── video-physics.md            #   내 예측, 후보 풀, 노트 링크, 기록, 판정 보정, 접기·전환
+├── concepts/                       # 개념당 노트 1개: <concept-slug>.md (개념 도움·learn·practice)
+│   └── optical-flow.md
+├── synthesis/                      # synth 결과: YYYY-MM-DD.md
+│   └── 2026-11-15.md
+└── gap-log.md                      # 연구 제약 + 갭·의문·아이디어 누적 (주제 열 포함)
 ```
+
+- 주제 소속과 skim 판정은 노트 frontmatter(`topics`, `skim_verdict`)에만 저장한다. 주제 파일의 `## 노트`는 링크 목록이다.
+- 템플릿은 스킬 폴더의 `skills/paper-critique/templates/`에 있다.
+  - 노트: `paper-note.md`, `skim-note.md`
+  - 주제 파일: `topic.md`
+  - 개념 노트: `concept.md`
+  - 갭 로그: `gap-log.md`
 
 노트 폴더는 git으로 관리하는 걸 권장. Obsidian vault로 열면 `[[링크]]`가 그래프로 보인다.
 
