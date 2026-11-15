@@ -15,7 +15,7 @@
    - 노트를 `status: in-progress`로 바꾸고, 흐름 5단계에서 `status: done`으로 되돌린다.
    - `## Skim 판정` 아래에 `### 재판정 YYYY-MM-DD`를 추가하고 새 판정, 새 사실 카드, 새 반론을 그 아래에 쓴다. 이전 내용은 지우지 않는다.
    - 주제 `## 기록`에 `skim` 줄을 새로 쓰지 않는다. 같은 논문을 두 번 세지 않기 위해서다.
-   - 판정이 바뀌면 `skim_verdict`를 고치고 판정 보정 기록을 한 줄 쓴다(`references/checkpoint.md`).
+   - 판정이 바뀌면 `skim_verdict`를 고치고 판정 보정 기록을 한 줄 쓴다(`references/checkpoint.md` 6절).
 
 ## 2. 흐름
 
@@ -41,7 +41,7 @@
 
 1. frontmatter를 `depth: deep`, `status: in-progress`, `phase: 0`으로 바꾼다. `skim_verdict`와 `## Skim 판정`부터 `## Claude 반론`까지는 한 글자도 고치지 않는다. frontmatter 주석은 `templates/paper-note.md`의 주석으로 바꾸고, 위 세 키 말고는 값을 그대로 둔다.
 2. 파일 끝(`## Claude 반론` 아래)에 `templates/paper-note.md`의 `## 읽는 이유`부터 끝까지를 붙인다.
-3. 판정을 마친 뒤 승격하는데 원래 `skim_verdict`가 `done`이나 `drop`이면 판정 보정 기록을 한 줄 쓴다. `skim_verdict`는 원래 값으로 두고, 보정 줄의 판정 칸은 `<원래 판정> → deep(승격)`으로 쓴다. 이유는 사용자 메시지에 이미 있으면 그 말을 그대로 적고, 없으면 한 번 묻는다.
+3. 판정을 마친 뒤 승격하는데 원래 `skim_verdict`가 `done`이나 `drop`이면 `references/checkpoint.md` 6절대로 판정 보정 기록을 한 줄 쓴다.
 4. 판정 전 승격(사용자가 판정 없이 바로 깊게 읽겠다고 할 때)은 `skim_verdict`를 비워 두고 판정 보정 기록을 쓰지 않는다. 노트에 `topics`가 있으면 각 주제 파일 `## 노트`에 링크가 없을 때 덧붙이고 주제 `next`를 갱신한다.
 5. 승격 후에는 `references/read.md` Phase 0의 "PDF를 끝까지 읽는다"부터 이어간다. "노트 파일을 템플릿으로 만들고" 단계는 이미 끝났으므로 건너뛴다. 그다음 `읽는 이유` 질문과 온보딩 제안을 평소대로 한다.
 6. skim 이유를 `## 읽는 이유`로 옮기지 않는다. 사용자 말은 쓴 자리에 그대로 둔다(절대 규칙 3).
@@ -56,5 +56,4 @@
 ## 6. 그 밖
 
 1. 중단은 절대 규칙 5를 따른다. 판정 전에 멈추면 `status: in-progress`로 두고 `next`에 멈춘 단계를 적는다.
-2. 판정 보정 기록은 노트 `topics`에 있는 주제 파일마다 쓴다. `topics`가 없으면 쓰지 않는다.
-3. 값이 다르다. `skim_verdict: done`은 "이 논문은 더 볼 필요 없음"이고, 노트 `status: done`(작업 끝)이나 주제 `status: dropped`(주제 접기)와 다르다.
+2. 값이 다르다. `skim_verdict: done`은 "이 논문은 더 볼 필요 없음"이고, 노트 `status: done`(작업 끝)이나 주제 `status: dropped`(주제 접기)와 다르다.

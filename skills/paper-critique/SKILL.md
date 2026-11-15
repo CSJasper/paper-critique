@@ -165,7 +165,7 @@ topics/        # 주제당 파일 1개: <slug>.md (map·skim·checkpoint가 씀)
 - 노트 수를 deep(`done / in-progress / paused`)과 skim(판정 완료 / 진행 중 / deep 대기)으로 나눠 센다. `depth`가 없으면 deep이다. deep 대기는 `depth: skim`이고 `skim_verdict: deep`인 노트(아직 승격 전)이며 이름도 나열한다. 진행 중인 노트와 각 `next`(`onboard: in-progress`면 온보딩 중이라고 표시)
 - 최근 읽은 논문 5개
   - 최근 목록에는 skim 노트도 넣고 이름 옆에 (skim)을 단다. 완료로 세는 것은 depth가 deep인 `done` 노트뿐이다. 정렬은 `read_date` 최신순이고, 같으면 파일 수정 시각이 늦은 순이다.
-- 주제별 `slug · status · skim N · deep N · checkpoint까지 skim M편 남음`. N은 노트 frontmatter `topics`에 그 slug가 있는 노트를 depth별로 센 수다. M = 8 − (기준선 이후 `skim` 줄 수)이고 기준선은 `references/checkpoint.md`를 따른다. 기준선 이후 `deep 완료` 줄이 있거나 M ≤ 0이면 M 대신 `제안`, `## 기록` 마지막 줄이 답을 받지 못한 `checkpoint 제안`이면 `제안 대기`로 표시한다. paused·dropped·pivoted 주제도 넣되 M 대신 `—`를 쓴다. `topics/`가 없으면 생략한다.
+- 주제별 `slug · status · skim N · deep N · checkpoint까지 skim M편 남음`. N은 노트 frontmatter `topics`에 그 slug가 있는 노트를 depth별로 센 수다. M = 8 − (기준선 이후 `skim` 줄 수)이고 기준선은 `references/checkpoint.md`를 따른다. 기준선 이후 답을 받지 못한 `checkpoint 제안` 줄이 있으면 `제안 대기`, 없고 기준선 이후 `deep 완료` 줄이 있거나 M ≤ 0이면 `제안`을 M 대신 표시한다. paused·dropped·pivoted 주제도 넣되 M 대신 `—`를 쓴다. `topics/`가 없으면 생략한다.
 - gap-log 열린 항목 수 (`open + promising`)
 - 마지막 synth 날짜
 - 개념 노트 상태별 수(`introduced / checked / held`), `learn_state: skipped` 수, `in-progress`·`paused` learn 목록(`from_note`가 있으면 "논문 노트에서 멈춘 learn"으로 노트 이름과 함께, 없으면 논문 없는 learn), 가장 오래 복습 안 한 `checked` 3개(정렬은 모드 6과 같다). `concepts/`가 없으면 생략한다.
